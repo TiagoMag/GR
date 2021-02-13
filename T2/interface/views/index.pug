@@ -1,0 +1,19 @@
+extends layout
+
+block content
+    .w3-card-4
+      header.w3-container.w3-teal
+        h3.w3-center Monitorização
+      if list.hosts.length > 0
+        .w3-container 
+        ul.w3-ul.w3-center
+          li.w3-li
+            h5.w3-monospace <strong> Lista de hosts monitorizados:</strong>
+          each val, index in list.hosts
+            li.w3-li <i class="fas fa-angle-right"></i> Host #{index} : 
+                a(href= val) #{val}
+      else
+        .w3-container
+          p Não foram encontrados hosts monitorizados ...
+      footer.w3-container.w3-teal
+        address Gerado :: #{date}

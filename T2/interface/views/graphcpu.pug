@@ -1,0 +1,353 @@
+extends layout
+
+block content
+        .w3-card-4
+            header.w3-container.w3-teal
+                h3.w3-left  #{nome} - Gráfico %cpu consumido 
+            if listdata.length > 0
+                .w3-container
+                .w3-bar.w3-blue-gray
+                    a(onclick="nowFunction()" class="w3-bar-item w3-button") Historico
+                    a(onclick="lastdayFunction()" class="w3-bar-item w3-button") Último dia
+                    a(onclick="lasthourFunction()" class="w3-bar-item w3-button") Última hora
+                .w3-container.w3-border-green
+                    .chart-container
+                    canvas(id="lineChart" height="100" width="300") 
+            else 
+                .w3-container
+                    p Sem dados monitorizados ...
+            footer.w3-container.w3-teal
+               p
+               a(href="/" + host) Voltar à página principal 
+               address Gerado :: #{date}  
+        
+        script(src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js")
+        script(src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.js")
+        script(src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js")
+        script. 
+            function compare( a, b ) {
+                if ( Date.parse(a.x) < Date.parse(b.x) ){
+                    return -1;
+                }
+                if ( Date.parse(a.x) > Date.parse(b.x) ){
+                    return 1;
+                }
+                return 0;
+            }
+        script.
+            function lastdayFunction(){
+                lineChart.destroy();
+                $.ajax({
+                    url: 'http://127.0.0.1:5000/monitoring/#{host}/#{nome}?q=cpu&_sort=lastday',
+                    method: 'GET',
+                    dataType: 'json',
+                    success: function (d) {
+                        var idata = d.data.sort(compare);    
+                        var array = []
+                        d.data.map(element => {array.push(element.x)});
+                        var ilabels = array.sort()
+                        console.log(ilabels)
+                        console.log(idata)
+                        const chart = document.getElementById('lineChart').getContext("2d");
+                        let lineChart = new Chart(chart,{
+                        type: 'line',
+                        data:{
+                            labels: ilabels,
+                            datasets: [{
+                                label: '%Cpu consumido em #{nome} ',
+                                fillColor: "#79D1CF",
+                                strokeColor: "#79D1CF",
+                                backgroundColor: "rgba(75,192,192,0.4)",
+                                borderColor: "rgba(75,72,192,1)",
+                                borderCapStyle: 'butt',
+                                borderDash:[],
+                                borderDashOddset: 0.0,
+                                borderJoinStyler: 'mitter',
+                                pointBorderColor: "rgba(75,72,192,1)",
+                                pointBackgroundColor: "#fff",
+                                pointBorderWidth: 1,
+                                pointHoverRadius: 5,
+                                pointHoverBackgroundColort:"rgba(75,72,192,1)",
+                                pointHoverBorderColor:"rgba(220,220,220,1)",
+                                pointHoverBorderWidth:2,
+                                pointRadius: 1,
+                                pointHitRadius: 10,
+                                data: idata,
+                                borderWidth: 2,
+                                borderColor: "#3e95cd",
+                                fill: false,
+                                pointRadius: 0
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                xAxes: [{
+                                    type: 'time',
+                                    time: {
+                                        parser: 'hh:mm:ss',
+                                        unit: 'hour',
+                                        tooltipFormat: 'lll',
+                                        displayFormats: {
+                                            hour: 'hh:mm:ss'
+                                        }
+                                    },
+                                    ticks: {
+                                        source: 'data',
+                                        maxRotation: 90,
+                                        minRotation: 90
+                                    },
+                                    scaleLabel: {
+                                            display: true,
+                                            labelString: 'Uptime(horas)'
+                                    }
+                                }],
+                                yAxes: [{
+                                    ticks: {
+                                        fixedStepSize: 10,
+                                        beginAtZero: true
+                                    },
+                                    scaleLabel: {
+                                            display: true,
+                                            labelString: '%CPU consumido'
+                                    }
+                                }],
+                            },
+                        },   
+                    });
+                    }
+                }) 
+            }
+        script.
+            function nowFunction(){
+                lineChart.destroy();
+                $.ajax({
+                    url: 'http://127.0.0.1:5000/monitoring/#{host}/#{nome}?q=cpu',
+                    method: 'GET',
+                    dataType: 'json',
+                    success: function (d) {
+                        var idata = d.data.sort(compare);    
+                        var array = []
+                        d.data.map(element => {array.push(element.x)});
+                        var ilabels = array.sort()
+                        console.log(ilabels)
+                        console.log(idata)
+                        const chart = document.getElementById('lineChart').getContext("2d");
+                        let lineChart = new Chart(chart,{
+                        type: 'line',
+                        data:{
+                            labels: ilabels,
+                            datasets: [{
+                                label: '%Cpu consumido em #{nome} ',
+                                fillColor: "#79D1CF",
+                                strokeColor: "#79D1CF",
+                                backgroundColor: "rgba(75,192,192,0.4)",
+                                borderColor: "rgba(75,72,192,1)",
+                                borderCapStyle: 'butt',
+                                borderDash:[],
+                                borderDashOddset: 0.0,
+                                borderJoinStyler: 'mitter',
+                                pointBorderColor: "rgba(75,72,192,1)",
+                                pointBackgroundColor: "#fff",
+                                pointBorderWidth: 1,
+                                pointHoverRadius: 5,
+                                pointHoverBackgroundColort:"rgba(75,72,192,1)",
+                                pointHoverBorderColor:"rgba(220,220,220,1)",
+                                pointHoverBorderWidth:2,
+                                pointRadius: 1,
+                                pointHitRadius: 10,
+                                data: idata,
+                                borderWidth: 2,
+                                borderColor: "#3e95cd",
+                                fill: false,
+                                pointRadius: 0
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                xAxes: [{
+                                    type: 'time',
+                                    time: {
+                                        parser: 'hh:mm:ss',
+                                        unit: 'hour',
+                                        tooltipFormat: 'lll',
+                                        displayFormats: {
+                                            hour: 'hh:mm:ss'
+                                        }
+                                    },
+                                    ticks: {
+                                        source: 'data',
+                                        maxRotation: 90,
+                                        minRotation: 90
+                                    },
+                                    scaleLabel: {
+                                            display: true,
+                                            labelString: 'Uptime(horas)'
+                                    }
+                                }],
+                                yAxes: [{
+                                    ticks: {
+                                        fixedStepSize: 10,
+                                        beginAtZero: true
+                                    },
+                                    scaleLabel: {
+                                            display: true,
+                                            labelString: '%CPU consumido'
+                                    }
+                                }],
+                            },
+                        },   
+                    });
+                    }
+                }) 
+            }
+         function lasthourFunction(){
+                lineChart.destroy();
+                $.ajax({
+                    url: 'http://127.0.0.1:5000/monitoring/#{host}/#{nome}?q=cpu&_sort=lasthour',
+                    method: 'GET',
+                    dataType: 'json',
+                    success: function (d) {
+                        var idata = d.data.sort(compare);    
+                        var array = []
+                        d.data.map(element => {array.push(element.x)});
+                        var ilabels = array.sort()
+                        console.log(ilabels)
+                        console.log(idata)
+                        const chart = document.getElementById('lineChart').getContext("2d");
+                        let lineChart = new Chart(chart,{
+                        type: 'line',
+                        data:{
+                            labels: ilabels,
+                            datasets: [{
+                                label: '%Cpu consumido em #{nome} ',
+                                fillColor: "#79D1CF",
+                                strokeColor: "#79D1CF",
+                                backgroundColor: "rgba(75,192,192,0.4)",
+                                borderColor: "rgba(75,72,192,1)",
+                                borderCapStyle: 'butt',
+                                borderDash:[],
+                                borderDashOddset: 0.0,
+                                borderJoinStyler: 'mitter',
+                                pointBorderColor: "rgba(75,72,192,1)",
+                                pointBackgroundColor: "#fff",
+                                pointBorderWidth: 1,
+                                pointHoverRadius: 5,
+                                pointHoverBackgroundColort:"rgba(75,72,192,1)",
+                                pointHoverBorderColor:"rgba(220,220,220,1)",
+                                pointHoverBorderWidth:2,
+                                pointRadius: 1,
+                                pointHitRadius: 10,
+                                data: idata,
+                                borderWidth: 2,
+                                borderColor: "#3e95cd",
+                                fill: false,
+                                pointRadius: 0
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                xAxes: [{
+                                    type: 'time',
+                                    time: {
+                                        parser: 'hh:mm:ss',
+                                        unit: 'hour',
+                                        tooltipFormat: 'lll',
+                                        displayFormats: {
+                                            hour: 'hh:mm:ss'
+                                        }
+                                    },
+                                    ticks: {
+                                        source: 'data',
+                                        maxRotation: 90,
+                                        minRotation: 90
+                                    },
+                                    scaleLabel: {
+                                            display: true,
+                                            labelString: 'Uptime(horas)'
+                                    }
+                                }],
+                                yAxes: [{
+                                    ticks: {
+                                        fixedStepSize: 10,
+                                        beginAtZero: true
+                                    },
+                                    scaleLabel: {
+                                            display: true,
+                                            labelString: '%CPU consumido'
+                                    }
+                                }],
+                            },
+                        },   
+                    });
+                    }
+                }) 
+            }
+        script.
+            var idata = JSON.parse('!{listdata}');    
+            var ilabels = JSON.parse('!{listlabels}'); 
+            const chart = document.getElementById('lineChart').getContext("2d");
+            let lineChart = new Chart(chart,{
+                type: 'line',
+                data:{
+                    labels: ilabels,
+                    datasets: [{
+                        label: '%Cpu consumido em #{nome} ',
+                        fillColor: "#79D1CF",
+                        strokeColor: "#79D1CF",
+                        backgroundColor: "rgba(75,192,192,0.4)",
+                        borderColor: "rgba(75,72,192,1)",
+                        borderCapStyle: 'butt',
+                        borderDash:[],
+                        borderDashOddset: 0.0,
+                        borderJoinStyler: 'mitter',
+                        pointBorderColor: "rgba(75,72,192,1)",
+                        pointBackgroundColor: "#fff",
+                        pointBorderWidth: 1,
+                        pointHoverRadius: 5,
+                        pointHoverBackgroundColort:"rgba(75,72,192,1)",
+                        pointHoverBorderColor:"rgba(220,220,220,1)",
+                        pointHoverBorderWidth:2,
+                        pointRadius: 1,
+                        pointHitRadius: 10,
+                        data: idata,
+                        borderWidth: 2,
+                        borderColor: "#3e95cd",
+                        fill: false,
+                        pointRadius: 0
+                    }]
+                },
+                options: {
+                    scales: {
+                        xAxes: [{
+                            type: 'time',
+                            time: {
+                                parser: 'hh:mm:ss',
+                                unit: 'hour',
+                                tooltipFormat: 'lll',
+                                displayFormats: {
+                                    hour: 'hh:mm:ss'
+                                }
+                            },
+                            ticks: {
+                                source: 'data',
+                                maxRotation: 90,
+                                minRotation: 90
+                            },
+                            scaleLabel: {
+                                    display: true,
+                                    labelString: 'Uptime(horas)'
+                            }
+                        }],
+                        yAxes: [{
+                            ticks: {
+                                fixedStepSize: 10,
+                                beginAtZero: true
+                            },
+                            scaleLabel: {
+                                    display: true,
+                                    labelString: '%CPU consumido'
+                            }
+                        }],
+                    },
+                },   
+            });

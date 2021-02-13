@@ -1,0 +1,10 @@
+[firefox]
+host = localhost
+type = RAM
+threshold = 1.1
+
+[GmailUser]
+gmail_user = fusemailtestts@gmail.com
+gmail_password = fusemailtstest
+email_to = tiagohomagalhaes@gmail.com
+

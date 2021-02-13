@@ -1,0 +1,84 @@
+extends layout
+
+block content
+        .w3-card-4
+            header.w3-container.w3-teal
+                h3.w3-left Gráfico %tempo médio cpu esteve ocupado
+            if listdata.length > 0
+                .w3-container.w3-border-green
+                    .chart-container
+                    canvas(id="lineChart" height="100" width="300") 
+            else 
+                .w3-container
+                    p Sem dados monitorizados ...
+            footer.w3-container.w3-teal
+                p
+                a(href="/" + host) Voltar à página principal 
+                address Gerado :: #{date}   
+        script(src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js")
+        script(src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.js")
+        script(src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js")
+        script.
+            var datasetValue = [];
+            var datasets = JSON.parse('!{listdata}');
+            var count = JSON.parse('!{size}');
+            var colors = []
+            for (var j = 0; j < count; j++) {    
+                var randomColor = Math.floor(Math.random()*16777215).toString(16);
+                while (colors.includes(randomColor)){
+                    var randomColor = Math.floor(Math.random()*16777215).toString(16);
+                }
+                colors.push(randomColor)
+                datasetValue[j] = 
+                    {
+                        label: 'CPU'+j,
+                        fill: false,
+                        strokeColor: "#79D1CF",
+                        borderColor: "#"+randomColor,
+                        data : (datasets[j])
+                    }   
+            }
+            var idata = JSON.parse('!{listdata}');    
+            var ilabels = JSON.parse('!{listlabels}'); 
+            const chart = document.getElementById('lineChart').getContext("2d");
+            let lineChart = new Chart(chart,{
+                type: 'line',
+                data:{
+                    labels: ilabels,
+                    datasets: datasetValue
+                },
+                options: {
+                    scales: {
+                        xAxes: [{
+                            type: 'time',
+                            time: {
+                                parser: 'YYYY-MM-DD hh:mm:ss',
+                                unit: 'second',
+                                tooltipFormat: 'lll',
+                                displayFormats: {
+                                    second: 'YYYY-MM-DD hh:mm:ss'
+                                }
+                            },
+                            ticks: {
+                                source: 'data',
+                                maxRotation: 90,
+                                minRotation: 90
+                            },
+                            scaleLabel: {
+                                    display: true,
+                                    labelString: 'Dias'
+                            }
+                        }],
+                        yAxes: [{
+                            ticks: {
+                                fixedStepSize: 10,
+                                beginAtZero: true
+                            },
+                            scaleLabel: {
+                                    display: true,
+                                    labelString: '%CPU consumido'
+                            }
+                        }],
+                    },
+                },   
+            });

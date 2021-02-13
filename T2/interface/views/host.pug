@@ -1,0 +1,117 @@
+extends layout
+
+block content
+    .w3-card-4
+      header.w3-container.w3-teal
+        h3.w3-left Top 10 processos em #{host_name} 
+      if list.length > 0
+        div(class="w3-sidebar w3-light-grey w3-bar-block" style="width:25%")
+            h3.w3-bar-item.w3-border-bottom <i class="fas fa-info-circle"></i> Outras informações
+            a(href="/"+host_name+"/cpugeral" class="w3-bar-item w3-button w3-border-bottom") CPU geral
+            div(class="w3-dropdown-hover")
+                button(class="w3-button w3-bar-item w3-border-bottom") Grupos de processos <i class="fas fa-arrow-down"></i>
+                div(class="w3-dropdown-content w3-bar-block w3-card-4")
+                    a(href="/"+host_name+"/baixaduracao" class="w3-bar-item w3-button") Pequena duração
+                    a(href="/"+host_name+"/mediaduracao" class="w3-bar-item w3-button") Média duração
+                    a(href="/"+host_name+"/longaduracao" class="w3-bar-item w3-button") Longa duração
+
+        div(style="margin-left:25%")
+            .w3-container.w3-padding
+                label Ordenar por:
+                select(name="ord" id="ord" onchange="sortFun()")
+                    option(value="memory") Memória
+                    option(value="cpu") Cpu
+            .w3-container.w3-padding
+                table.w3-table-all#pickle
+                    thead
+                        tr
+                            th Nome
+                            th#change <i class="fa fa-memory"></i> %Memória média consumida
+                    tbody
+                   
+      else
+        .w3-container
+          p Nenhum processo encontrado ...
+    footer.w3-container.w3-teal
+        div(style="text-align: right")
+          p
+            a(href="/") Voltar à página inicial 
+            address Gerado :: #{date}
+    script(src='https://code.jquery.com/jquery-3.5.1.js')
+    link(rel='stylesheet', href='https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css')
+    script(src='https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js')
+    script.
+        $(document).ready(function() {
+            var host = '#{host_name}';
+            $('#pickle').DataTable( {
+                "paginate": false,
+                "responsive": true,
+                "order": [[ 1, "desc" ]],
+                "ajax": {
+                    "url": "http://127.0.0.1:5000/monitoring/"+host+"?topBy=mem",
+                    "type": "GET"
+                },
+                "columns": [
+                    { "data": "nome",
+                        "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                            $(nTd).html("<a href='http://localhost:7710/"+ host +'/'+oData.nome+"'>"+oData.nome+"</a>");
+                        } 
+                    },
+                    { "data": "mem" }
+                ],
+            } );
+        } );
+         
+    script.
+       function sortFun(){
+            var value = document.getElementById("ord").value;
+            console.log(value);
+            var table = $('#pickle').DataTable();
+            table.destroy();
+            if (value == "memory"){
+                document.getElementById("change").innerHTML = "<i class="+'"fa fa-memory"'+"></i> %Memória média consumida"
+                $(document).ready(function() {
+                var host = '#{host_name}';
+                $('#pickle').DataTable( {
+                    "paginate": false,
+                    "order": [[ 1, "desc" ]],
+                    "ajax": {
+                        "url": "http://127.0.0.1:5000/monitoring/"+host+"?topBy=mem",
+                        "type": "GET"
+                    },
+                    "columns": [
+                        { "data": "nome",
+                            "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                                $(nTd).html("<a href='http://localhost:7710/"+ host +'/'+oData.nome+"'>"+oData.nome+"</a>");
+                            } 
+                        },
+                        { "data": "mem" }
+                    ],
+                });
+            });
+            }else if (value == "cpu"){
+                document.getElementById("change").innerHTML = "<i class="+'"fas fa-microchip"'+"> </i> Número total de centisegundos dos recursos de CPU consumidos";
+                $(document).ready(function() {
+                    var host = '#{host_name}';
+                    $('#pickle').DataTable( {
+                        "paginate": false,
+                        "order": [[ 1, "desc" ]],
+                        "ajax": {
+                            "url": "http://127.0.0.1:5000/monitoring/"+host+"?topBy=cpu",
+                            "type": "GET"
+                        },
+                        "columns": [
+                            { "data": "nome",
+                                "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                                $(nTd).html("<a href='http://localhost:7710/"+ host +'/'+oData.nome+"'>"+oData.nome+"</a>");
+                            } 
+                        },
+                        {"data": "cpu" }
+                    ],
+                });
+            });
+                
+            }
+                
+        }
+      

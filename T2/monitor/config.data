@@ -1,0 +1,9 @@
+[Hosts]
+number = 1
+host.0 = localhost
+
+[Port]
+host.0 = 161
+
+[Community]
+host.0 = gr2020

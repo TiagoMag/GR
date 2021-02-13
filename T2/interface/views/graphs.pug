@@ -1,0 +1,14 @@
+extends layout
+
+block content
+    .w3-card-4
+      header.w3-container.w3-teal
+        h3.w3-center Monitorização em #{nome} no host #{host}
+      .w3-container 
+      ul.w3-ul.w3-center
+        li.w3-li
+          h5.w3-monospace <strong> Informação:</strong>
+          li.w3-li <i class="fas fa-angle-right"></i> 
+              a(href="/"+host+"/"+nome+"/raminfo") Gráficos sobre %memória consumida pelo processo
+          li.w3-li <i class="fas fa-angle-right"></i>  
+              a(href="/"+host+"/"+nome+"/cpuinfo") Gráficos sobre %cpu consumido pelo processo 

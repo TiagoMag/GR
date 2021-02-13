@@ -1,0 +1,47 @@
+extends layout
+
+block content
+    .w3-card-4
+      header.w3-container.w3-teal
+        h3.w3-left Processos de baixa duração(segundos) em #{host} 
+      if list.length > 0
+            .w3-container.w3-padding
+                table.w3-table-all#pickle
+                    thead
+                        tr
+                            th Nome
+                            th Duração (segundos)
+                            th Frequência de aparecimento (segundos)
+                    tbody               
+      else
+        .w3-container
+          p Nenhum processo encontrado ...
+    footer.w3-container.w3-teal
+        p
+            a(href="/" + host) Voltar à página principal 
+            address Gerado :: #{date}
+    script(src='https://code.jquery.com/jquery-3.5.1.js')
+    link(rel='stylesheet', href='https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css')
+    script(src='https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js')
+    script.
+        $(document).ready(function() {
+            var host = '#{host}';
+            $('#pickle').DataTable( {
+                "paginate": true,
+                "order": [[ 1, "desc" ]],
+                "ajax": {
+                    "url": "http://127.0.0.1:5000/monitoring/"+host+"/grupos?q=baixa",
+                    "type": "GET"
+                },
+                "columns": [
+                    { "data": "nome",
+                        "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                            $(nTd).html("<a href='http://#{host}:7710/"+ host +'/'+oData.nome+"'>"+oData.nome+"</a>");
+                        } 
+                    },
+                    { "data": "duracao" },
+                    { "data": "freqmedia"}
+                ],
+            } );
+        } );
+         

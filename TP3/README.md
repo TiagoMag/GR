@@ -13,6 +13,7 @@ Agente SNMP para monitorização de datas de eventos
 ## Requisitos
 
 **Java**   </br>
+**SNMP** </br>
 ## Instalação
 
 - Clone/download repositório.

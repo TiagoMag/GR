@@ -1,15 +1,28 @@
-# TP3 GR
+# Gestão de redes
 
 ## Elementos
 
-Todo o repositório foi realizado pelos elementos:
-
+Trabalho realizado pelos elementos:
 
 - [André Morais, A83899](https://github.com/Demorales1998)
 - [Tiago Magalhães, A84485](https://github.com/TiagoMag)
 
+## Sobre 
+Agente SNMP para monitorização de datas de eventos
+
+## Requisitos
+
+**Java**   </br>
+## Instalação
+
+- Clone/download repositório.
+
 ## Uso
-**Enquanto o programa java estiver a correr, correr o comando, como por exemplo:**
+**Depois de instaladas as dependências, para cada servidor fazer o seguinte:**</br>
 ```
-snmpwalk -v 2c -c public localhost:3003 .1.3.6.1.4.1.1
+cd agenteEvento
 ```
+- Ligar agente:</br>
+``` 
+java -jar Agenter.jar
+``` 

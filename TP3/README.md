@@ -18,7 +18,7 @@ Agente SNMP para monitorização de datas de eventos
 - Clone/download repositório.
 
 ## Uso
-**Depois de instaladas as dependências, para cada servidor fazer o seguinte:**</br>
+- Ir para diretoria do executável
 ```
 cd agenteEvento
 ```

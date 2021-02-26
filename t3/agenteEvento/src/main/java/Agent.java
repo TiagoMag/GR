@@ -150,7 +150,7 @@ public class Agent implements VariableProvider {
     }
 
     /**
-     * Função que popula MIB através do ficheiro de configuração.
+     * Método que popula MIB através do ficheiro de configuração.
      * @throws IOException
      */
     public void populateMib () throws IOException {
@@ -184,7 +184,7 @@ public class Agent implements VariableProvider {
     }
 
     /**
-     * Função que retira eventos da MIB através do ficheiro de configuração.
+     * Método que retira eventos da MIB através do ficheiro de configuração.
      * @throws IOException
      */
     public void removeMib () throws IOException {

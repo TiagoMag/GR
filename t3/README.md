@@ -25,5 +25,5 @@ cd agenteEvento
 ```
 - Ligar agente:</br>
 ``` 
-java -jar Agenter.jar
+java -jar Agente.jar
 ``` 

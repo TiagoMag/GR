@@ -12,7 +12,7 @@ Agente SNMP para monitorização de datas de eventos
 
 ## Requisitos
 
-**Java**   </br>
+**Java** - >=11  </br>
 **SNMP** </br>
 ## Instalação
 

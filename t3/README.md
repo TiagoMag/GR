@@ -8,7 +8,7 @@ Trabalho realizado pelos elementos:
 - [Tiago Magalhães, A84485](https://github.com/TiagoMag)
 
 ## Sobre 
-Agente SNMP para monitorização de datas de eventos
+Agente SNMP para monitorização de datas de eventos.
 
 ## Requisitos
 

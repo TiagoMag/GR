@@ -27,3 +27,7 @@ cd agenteEvento
 ``` 
 java -jar Agente.jar
 ``` 
+- Testar agente(exemplo):</br>
+```
+snmpwalk -v2c -c public localhost:3003 1.3.6.1.2.1.60.10.4
+```

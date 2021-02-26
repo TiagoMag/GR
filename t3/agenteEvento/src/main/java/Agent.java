@@ -164,8 +164,15 @@ public class Agent implements VariableProvider {
         Ini ini = new Ini().read(input);
         Map<String, Map<String, String>> sections = ini.getSections();
         for(Map.Entry<String, Map<String, String>> entry : sections.entrySet()) {
-            if(entry.getKey().equals("operacoes")) break;
+            int value = 0;
             int index = Integer.parseInt(entry.getKey().substring(6));
+            if (entry.getValue().containsKey("remove")){
+                value = Integer.parseInt(entry.getValue().get("remove"));
+                if(value==1) {
+                    modules.removeEvento(index);
+                    break;
+                }
+            }
             if (entry.getValue().containsKey("descricao"))
                 descricao = entry.getValue().get("descricao");
             if (entry.getValue().containsKey("begin_date"))
@@ -183,21 +190,6 @@ public class Agent implements VariableProvider {
         }
     }
 
-    /**
-     * Método que retira eventos da MIB através do ficheiro de configuração.
-     * @throws IOException
-     */
-    public void removeMib () throws IOException {
-        Path input = Paths.get("config.ini");
-        Ini ini = new Ini().read(input);
-        Map<String, Map<String, String>> sections = ini.getSections();
-        Map<String, String> ops = sections.get("operacoes");
-        for (Map.Entry<String, String> entry : ops.entrySet()) {
-            int index = Integer.parseInt(entry.getKey().substring(6));
-            this.modules.removeEvento(index);
-        }
-    }
-
     public void run() {
         // initialize agent before registering our own modules
         agent.initialize();
@@ -207,7 +199,6 @@ public class Agent implements VariableProvider {
         agent.setupProxyForwarder();
         try {
             populateMib();
-            removeMib();
             new Watcher("./",this).start(); // Observa ficheiro de configurações caso surjam alterações
         } catch (IOException e) {
             e.printStackTrace();

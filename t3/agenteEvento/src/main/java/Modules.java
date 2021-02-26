@@ -251,6 +251,7 @@ public class Modules implements MOGroup {
             try {
                 e = serializaEvento(index);
             } catch (NaoExisteEventoException naoExisteEventoException) {
+                removeEvento(e.getIndice());
                 naoExisteEventoException.printStackTrace();
             }
 

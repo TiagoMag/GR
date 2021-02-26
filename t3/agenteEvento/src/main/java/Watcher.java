@@ -31,9 +31,10 @@ public class Watcher extends Thread {
                 WatchKey watchKey = watcher.take();
                 List<WatchEvent<?>> events = watchKey.pollEvents();
                 for (WatchEvent<?> event : events) {
+                    if(event.context().toString().equals("config.ini~")) {
                         System.out.println("Modificado: " + event.context().toString());
                         agent.populateMib();
-                        agent.removeMib();
+                    }
                 }
                 watchKey.reset();
             }

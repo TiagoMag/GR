@@ -212,7 +212,7 @@ public class Modules implements MOGroup {
      * @return
      */
     private Evento serializaEvento(int index) throws NaoExisteEventoException {
-        Path input = Paths.get("config.cfg");
+        Path input = Paths.get("config.ini");
         Ini ini = null;
         try {
             ini = new Ini().read(input);

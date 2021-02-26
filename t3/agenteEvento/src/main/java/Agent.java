@@ -160,7 +160,7 @@ public class Agent implements VariableProvider {
         String futuro = "";
         String presente = "";
         String passado = "";
-        Path input = Paths.get("config.cfg");
+        Path input = Paths.get("config.ini");
         Ini ini = new Ini().read(input);
         Map<String, Map<String, String>> sections = ini.getSections();
         for(Map.Entry<String, Map<String, String>> entry : sections.entrySet()) {
@@ -188,7 +188,7 @@ public class Agent implements VariableProvider {
      * @throws IOException
      */
     public void removeMib () throws IOException {
-        Path input = Paths.get("config.cfg");
+        Path input = Paths.get("config.ini");
         Ini ini = new Ini().read(input);
         Map<String, Map<String, String>> sections = ini.getSections();
         Map<String, String> ops = sections.get("operacoes");

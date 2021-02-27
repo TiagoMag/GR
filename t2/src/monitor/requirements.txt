@@ -1,0 +1,4 @@
+configparser
+pyinotify
+jsonlines
+easysnmp 

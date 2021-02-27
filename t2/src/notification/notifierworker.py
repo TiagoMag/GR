@@ -13,7 +13,7 @@ class NotifierWorker(Thread):
     self.tipo = tipo
     self.threshold = threshold
     self.name = name
-    self.path = '../monitor/logs/' + self.host +'/' + self.tipo + '/' + self.name + '.db'
+    self.path = '../monitor/logs/' + self.host +'/' + self.tipo + '/' + self.name + '.jsonl'
 
   # Verifica mudanças no ficheiro de logs. 
   def onChange(self,ev):

@@ -30,7 +30,7 @@ def main():
     ConfigChange() # Monitoriza ficheiro config
     try :
         config = configparser.ConfigParser() # Parser para o ficheiro de configuração
-        config.read('config.data') # Inicia parsing do ficheiro de configuração
+        config.read('config.ini') # Inicia parsing do ficheiro de configuração
     except configparser.Error :
         print("Erro na leitura da config")   
 

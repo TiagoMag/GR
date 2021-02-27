@@ -8,14 +8,14 @@ def send (process, threshold, tipo, host):
     
     config = configparser.ConfigParser()
     # inicia parsing do ficheiro de configuração
-    config.read('config.data')
+    config.read('config.ini')
 
     gmail_user = config['GmailUser']['gmail_user']
     gmail_password = config['GmailUser']['gmail_password']
 
     sent_from = config['GmailUser']['gmail_user']
     to = config['GmailUser']['email_to']
-    subject = 'Código de acesso'
+    subject = 'Alarme'
     body = ('O processo ' + process 
              + ' ultrapassou o limite' 
              + '(' + str(threshold) + ')' 

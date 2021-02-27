@@ -13,7 +13,7 @@ def send (process, threshold, tipo, host):
     gmail_user = config['GmailUser']['gmail_user']
     gmail_password = config['GmailUser']['gmail_password']
 
-    sent_from = 'fusemailtestts@gmail.com'
+    sent_from = config['GmailUser']['gmail_user']
     to = config['GmailUser']['email_to']
     subject = 'Código de acesso'
     body = ('O processo ' + process 

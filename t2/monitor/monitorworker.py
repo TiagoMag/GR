@@ -113,7 +113,7 @@ class MonitorWorker(Thread):
 
   # Escreve {time,cpu} para o ficheiro de logs do processo correspodente.
   def write_log_cpu(self,process_name,value):
-    with jsonlines.open('logs/' + self.address + '/CPU/' + process_name + '.db', mode='a') as writer:
+    with jsonlines.open('logs/' + self.address + '/CPU/' + process_name + '.jsonl', mode='a') as writer:
       writer.write(value)
       writer.close()
 
@@ -133,7 +133,7 @@ class MonitorWorker(Thread):
 
   # Escreve {time,%ram} para o ficheiro de logs do processo correspondente.
   def write_log_ram(self,process_name,value):
-    with jsonlines.open('logs/' + self.address + '/RAM/' + process_name + '.db', mode='a') as writer:
+    with jsonlines.open('logs/' + self.address + '/RAM/' + process_name + '.jsonl', mode='a') as writer:
       writer.write(value)
       writer.close()
 

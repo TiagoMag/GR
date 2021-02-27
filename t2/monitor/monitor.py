@@ -30,7 +30,7 @@ def main():
     ConfigChange() # Monitoriza ficheiro config
     try :
         config = configparser.ConfigParser() # Parser para o ficheiro de configuração
-        config.read('config.data') # Inicia parsing do ficheiro de configuração
+        config.read('config.ini') # Inicia parsing do ficheiro de configuração
     except configparser.Error :
         print("Erro na leitura da config")    
     try :
@@ -44,11 +44,12 @@ def main():
             host_address = config['Hosts']['host.' + str(i)] # Endereço do host
             host_community = config['Community']['host.' + str(i)] # Comunnity string
             host_port = config['Port']['host.' + str(i)] # Porta do host
+            host_polling = int(config['Polling']['host.' + str(i)]) # Polling definido
         except configparser.Error as err :
             print("Config error: {0}".format(err))
         
         # Iniciar thread de monitorização para o host.
-        thread = MonitorWorker(host_address,host_community,2,host_port,30)
+        thread = MonitorWorker(host_address,host_community,2,host_port,host_polling)
         thread.start()
         
 class ConfigChange(Thread):
@@ -60,7 +61,7 @@ class ConfigChange(Thread):
     def run(self):
         # Verifica mudanças no ficheiro config.
         wm = pyinotify.WatchManager()
-        wm.add_watch('config.data', pyinotify.IN_MODIFY, onChange)
+        wm.add_watch('config.ini', pyinotify.IN_MODIFY, onChange)
         notifier = pyinotify.Notifier(wm)
         notifier.loop()
     

@@ -56,7 +56,7 @@ class ConfigChange(Thread):
     def run(self):
         # Verifica mudanças no ficheiro config.
         wm = pyinotify.WatchManager()
-        wm.add_watch('config.data', pyinotify.IN_MODIFY, onChange)
+        wm.add_watch('config.ini', pyinotify.IN_MODIFY, onChange)
         notifier = pyinotify.Notifier(wm)
         notifier.loop()
     

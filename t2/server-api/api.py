@@ -24,7 +24,7 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 @app.route('/monitoring/hosts', methods=['GET'])
 def host():
     config = configparser.ConfigParser()
-    config.read(app_dir + 'config.data')
+    config.read(app_dir + 'config.ini')
     hosts_number = int(config['Hosts']['number'])
     hosts_list = []
     for i in range(hosts_number) :
@@ -55,9 +55,9 @@ def index(address):
             reader.close()         
         
             if sample_size != 0:
-                dic[filename[:-3]] = (med_ram / sample_size) # -3 retira extensao
+                dic[filename[:-6]] = (med_ram / sample_size) # -3 retira extensao
             else :
-                dic[filename[:-3]] = 0
+                dic[filename[:-6]] = 0
 
         sorted_d = dict(sorted(dic.items(), key=operator.itemgetter(1),reverse=True))
         top_10 = {}
@@ -80,7 +80,7 @@ def index(address):
                     pass    
                 cpu = obj["cpu"]
             reader.close()           
-            dic[filename[:-3]] = (cpu) # -3 retira extensao
+            dic[filename[:-6]] = (cpu) # -3 retira extensao
         
     sorted_d = dict(sorted(dic.items(), key=operator.itemgetter(1),reverse=True))
     top_10 = {}
@@ -117,7 +117,7 @@ def ram(address,processo):
         sort_type = request.args.get('_sort')
         # tipos de ordenamento de data 
         if(sort_type == "lastday"):
-            with jsonlines.open(logs_dir + address + '/RAM/'+ processo + '.db') as reader:
+            with jsonlines.open(logs_dir + address + '/RAM/'+ processo + '.jsonl') as reader:
                 for obj in reader:
                     key_time = datetime.strptime(obj["time"], '%Y-%m-%d %H:%M:%S.%f')
                     if  day_before <= key_time <= today:  
@@ -126,7 +126,7 @@ def ram(address,processo):
                 reader.close()         
         elif (sort_type == "lasthour"):
             last_hour_date_time = datetime.now() - timedelta(hours = 1)
-            with jsonlines.open(logs_dir + address + '/RAM/'+ processo + '.db') as reader:
+            with jsonlines.open(logs_dir + address + '/RAM/'+ processo + '.jsonl') as reader:
                 for obj in reader:
                     key_time = datetime.strptime(obj["time"], '%Y-%m-%d %H:%M:%S.%f')
                     if  last_hour_date_time <= key_time <= today:  
@@ -134,7 +134,7 @@ def ram(address,processo):
                         array.append(jsonobj)
                 reader.close()    
         else:  
-            with jsonlines.open(logs_dir + address + '/RAM/'+ processo + '.db') as reader:
+            with jsonlines.open(logs_dir + address + '/RAM/'+ processo + '.jsonl') as reader:
                 for obj in reader:
                     jsonobj={"x":obj["time"],"y":obj["mem"]}
                     array.append(jsonobj)
@@ -142,7 +142,7 @@ def ram(address,processo):
     elif typeq == "cpu" : 
         sort_type = request.args.get('_sort')
         if(sort_type == "lastday"):
-            with jsonlines.open(logs_dir + address + '/CPU/'+ processo + '.db') as reader:
+            with jsonlines.open(logs_dir + address + '/CPU/'+ processo + '.jsonl') as reader:
                 x = 0
                 for obj in reader:
                     key_time = datetime.strptime(obj["date"], '%Y-%m-%d %H:%M:%S.%f')
@@ -168,7 +168,7 @@ def ram(address,processo):
                 reader.close()
         elif(sort_type == "lasthour"):
             last_hour_date_time = datetime.now() - timedelta(hours = 1)
-            with jsonlines.open(logs_dir + address + '/CPU/'+ processo + '.db') as reader:
+            with jsonlines.open(logs_dir + address + '/CPU/'+ processo + '.jsonl') as reader:
                 x = 0
                 for obj in reader:
                     key_time = datetime.strptime(obj["date"], '%Y-%m-%d %H:%M:%S.%f')
@@ -193,7 +193,7 @@ def ram(address,processo):
                         x = 2   
                 reader.close()        
         else:
-            with jsonlines.open(logs_dir + address + '/CPU/'+ processo + '.db') as reader:
+            with jsonlines.open(logs_dir + address + '/CPU/'+ processo + '.jsonl') as reader:
                 x = 0
                 for obj in reader:
                     if x == 0 : 
@@ -260,7 +260,7 @@ def grupos(address):
         freq = 0.0
         total_time = 0                                                            
         with jsonlines.open(logs_dir + address + '/RAM/'+ file ) as reader:   
-            processo=file[:-3]
+            processo=file[:-6]
             x = 0
             for obj in reader:
                 if x == 0 : 

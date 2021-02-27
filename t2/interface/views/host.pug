@@ -37,7 +37,7 @@ block content
           p
             a(href="/") Voltar à página inicial 
             address Gerado :: #{date}
-    script(src='https://code.jquery.com/jquery-3.5.1.js')
+    script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js")
     link(rel='stylesheet', href='https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css')
     script(src='https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js')
     script.
@@ -60,8 +60,7 @@ block content
                     { "data": "mem" }
                 ],
             } );
-        } );
-         
+        } );   
     script.
        function sortFun(){
             var value = document.getElementById("ord").value;
@@ -109,9 +108,7 @@ block content
                         {"data": "cpu" }
                     ],
                 });
-            });
-                
-            }
-                
+            });   
+            }       
         }
       

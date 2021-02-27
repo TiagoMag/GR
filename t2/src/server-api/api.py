@@ -273,7 +273,8 @@ def grupos(address):
                         total_time += delta_time
                     else:
                         freq += delta_time
-                        sample_size+=1
+                        sample_size+= 1
+                        total_time += 30
                     time_1 = time_2 
             reader.close() 
         if(sample_size == 0):

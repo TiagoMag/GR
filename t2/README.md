@@ -29,6 +29,9 @@ pip install -r requirements.txt
 ```
 - Instalar dependências (nodejs)
 ```
+cd interface
+```
+```
 npm i
 ```
 

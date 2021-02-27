@@ -9,9 +9,9 @@ Ferramenta de monitorização.
 
 ## Requisitos
 
-**NodeJs** - 15.3.0 </br>
+**NodeJs**  </br>
 **npm** - Installs package dependencies for NodeJS</br>
-**Python** - 3.x+
+**Python3**  </br>
 **pip** Installs package dependencies for Python </br>
 **SNMP** </br>
 ## Instalação

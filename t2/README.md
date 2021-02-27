@@ -22,10 +22,7 @@ cd src/
 ```
 - Instalar dependências (python)
 ```
-cd monitor / cd notifier / cd server.api
-```
-```
-pip install -r requirements.txt
+pip install -r monitor/requirements.txt ; pip install -r notifier/requirements.txt ;  pip install -r server-api/requirements.txt 
 ```
 - Instalar dependências (nodejs)
 ```

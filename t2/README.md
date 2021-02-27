@@ -10,9 +10,9 @@ Ferramenta de monitorização.
 ## Requisitos
 
 **NodeJs**  </br>
-**npm** - Instala depêndencias para NodeJS</br>
+**npm** - Instala dependências para NodeJS</br>
 **Python3**  </br>
-**pip** - Instala depêndencias para Python </br>
+**pip** - Instala dependências para Python </br>
 **SNMP** </br>
 ## Instalação
 

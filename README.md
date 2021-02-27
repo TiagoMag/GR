@@ -4,6 +4,6 @@
 
 # Trabalhos:
 
-- TP1: 
+- TP1: Introdução SNMP
 - TP2: Ferramenta de monitorização.
 - TP3: Agente SNMP para monitorização de datas de eventos.
